@@ -22,14 +22,14 @@ const registerUser = asynchandler(async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedpassword = await bcrypt.hash(password, salt);
-    const user = User.create({
+    const user = await User.create({
         name,
         email,
         password: hashedpassword
     })
     if (user) {
         res.status(201).json({
-            _id: user.id,
+            _id: user._id,
             name: user.name,
             email: user.email,
             token: generateToken(user._id)

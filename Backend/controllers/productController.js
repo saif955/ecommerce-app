@@ -2,14 +2,14 @@ import Product from "../models/Products.js";
 import asynchandler from "express-async-handler";
 
 
-const getProudcts = asynchandler(async (req, res) => {
+const getProducts = asynchandler(async (req, res) => {
     try {
         const products = await Product.find({})
         res.status(200).json(products)
     } catch (error) {
         res.status(500).json({ message: "Please create product" })
     }
-    
+
 
 })
 
@@ -17,50 +17,50 @@ const getProudcts = asynchandler(async (req, res) => {
 
 const setProduct = asynchandler(async (req, res) => {
     const { name, image, price } = req.body
-    if (!name || !image || !price) {
-        res.status(400).json({
+    if (!name || !price) {
+        return res.status(400).json({
             message: "Please add all fields"
         })
     }
     const productExists = await Product.findOne({ name })
     if (productExists) {
-        res.status(400).json({
+        return res.status(400).json({
             message: "Product already exists"
         })
 
     }
-        const product = await Product.create({
-            name,
-            image,
-            price
-        })
-    if(product){
+    const product = await Product.create({
+        name,
+        image,
+        price
+    })
+    if (product) {
         res.status(201).json(product)
     }
-    else{
+    else {
         res.status(400)
         throw new Error("Product not found")
     }
-        
-    
- })
+
+
+})
 
 
 
 const updateProduct = asynchandler(async (req, res) => {
-    const {id}= req.params
+    const { id } = req.params
     const updatedProduct = req.body
     const product = await Product.findByIdAndUpdate(id, updatedProduct, { new: true })
-    if(product){
+    if (product) {
         res.status(200).json(product)
     }
-    else{
+    else {
         res.status(400)
         throw new Error("Product not found")
     }
-    
-    
- })
+
+
+})
 
 
 
@@ -71,8 +71,8 @@ const deleteProduct = asynchandler(async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Product not found" })
     }
-    
 
- })
 
-export { getProudcts, setProduct, updateProduct, deleteProduct }
+})
+
+export { getProducts, setProduct, updateProduct, deleteProduct }
