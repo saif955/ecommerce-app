@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
 
+
 connectDB().then(() => {
 
     app.listen(PORT, () => {
