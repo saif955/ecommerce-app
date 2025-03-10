@@ -31,19 +31,33 @@ const cartSchema = new mongoose.Schema({
                 min: [1, "Quantity must be at least 1"],
                 default: 1
             },
+            priceSnapshot: {
+                type: Number,
+                required: true,
+            },
         },
     ],
-    total: {
-        type: Number,
-    },
+    
     modifiedAt: {
         type: Date,
         default: Date.now,
     },
 },    
 {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+        virtuals: true
+    },
+    toObject: {
+        virtuals: true
+    }
 }
 );
+
+cartSchema.virtual("total").get(function () {
+    return this.items.reduce((total, item) => {
+        return total + item.product.price * item.quantity;
+    }, 0);
+});
 
 export default mongoose.model("Cart", cartSchema);
