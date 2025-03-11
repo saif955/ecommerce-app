@@ -38,10 +38,6 @@ const cartSchema = new mongoose.Schema({
         },
     ],
     
-    modifiedAt: {
-        type: Date,
-        default: Date.now,
-    },
 },    
 {
     timestamps: true,
