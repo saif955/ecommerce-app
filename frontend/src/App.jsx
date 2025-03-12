@@ -1,12 +1,11 @@
 
+import Homepage from "./components/homepage"
 
 function App() {
-  
   return (
-    
-  <div>
-
-  </div>
+    <div>
+      <Homepage />
+    </div>
   )
 }
 
