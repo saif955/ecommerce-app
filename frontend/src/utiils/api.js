@@ -52,6 +52,17 @@ export const loginUser = async (credentials) => {
   }
 };
 
+export const logoutUser = async () => {
+  localStorage.removeItem('user');
+};
 
+export const getProducts = async () => {
+  try {
+    const response = await api.get('/products');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || 'Failed to fetch products';
+  }
+};
 
 export default api;
