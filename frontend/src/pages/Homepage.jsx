@@ -19,6 +19,13 @@ const Homepage = () => {
       setLoading(false);
     }
   };
+  const getLoggedInUser = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      return true;
+    }
+    return false;
+  };
 
   const handleLogout = async () => {
     try {
@@ -35,6 +42,7 @@ const Homepage = () => {
 
   if (loading) return <div>Loading products...</div>;
   if (error) return <div>Error: {error}</div>;
+  if(!getLoggedInUser()) navigate("/login")
 
   return (
     <div>

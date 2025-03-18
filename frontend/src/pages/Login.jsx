@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../utiils/api";
 import {
-  Center,
   Text,
   Stack,
   Fieldset,
   Button,
   Field,
   Input,
+  Flex,
 } from "@chakra-ui/react";
 
 const Login = () => {
@@ -18,6 +18,7 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -38,9 +39,8 @@ const Login = () => {
     }
   };
   
-  if (error) return <div>Error: {error}</div>
   return (
-    <Center h="100vh">
+    <Flex align={"center"} justify={"center"} h={"100vh"}>
       <Fieldset.Root size="lg" maxW="md" p={4}>
         <Stack>
           <Text fontSize="2xl" fontWeight={"bold"}>
@@ -56,6 +56,7 @@ const Login = () => {
             <Input
               name="email"
               type="email"
+              placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
             />
@@ -65,23 +66,31 @@ const Login = () => {
             <Input
               name="password"
               type="password"
+              placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
             />
           </Field.Root>
         </Fieldset.Content>
         <Field.Root>
+          {error && (
+            <Text color="red.500" mb={4}>
+              {error}
+            </Text>
+          )}
           <Button
             type="submit"
             onClick={handleSubmit}
-            colorPalette="teal"
-            variant="surface"
+            colorScheme="teal"
+            variant="solid"
+            isLoading={isLoading}
+            isDisabled={!formData.email || !formData.password}
           >
-            Button
+            Login
           </Button>
         </Field.Root>
       </Fieldset.Root>
-    </Center>
+    </Flex>
   );
 };
 

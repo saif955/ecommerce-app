@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../utiils/api';
-
+import {
+  Text,
+  Stack,
+  Fieldset,
+  Button,
+  Field,
+  Input,
+  Flex,
+} from "@chakra-ui/react";
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,76 +37,90 @@ const Register = () => {
     }
 
     try {
-      const { token } = await registerUser({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password
-      });
+      const { token } = await registerUser(formData);
       
       localStorage.setItem('token', token);
       navigate('/');
     } catch (err) {
       setError(err.message || 'Registration failed');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-5">Register</h1>
-      {error && <div className="text-red-500 mb-4">{error}</div>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block mb-1">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="block mb-1">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="password" className="block mb-1">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="confirmPassword" className="block mb-1">Confirm Password</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-        >
-          Register
-        </button>
-      </form>
-    </div>
+    <Flex align={"center"} justify={"center"} h={"100vh"}>
+      <Fieldset.Root size="lg" maxW="md" p={4}>
+        <Stack>
+          <Text fontSize="2xl" fontWeight={"bold"}>
+            Register Information
+          </Text>
+          <Fieldset.HelperText>
+            Please provide your Registration Information below.
+          </Fieldset.HelperText>
+        </Stack>
+        <Fieldset.Content>
+          <Field.Root>
+            <Field.Label>name</Field.Label>
+            <Input
+              name="name"
+              type="name"
+              placeholder="jon doe"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>Email address</Field.Label>
+            <Input
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>Password</Field.Label>
+            <Input
+              name="password"
+              type="password"
+              placeholder="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>Confirm Password</Field.Label>
+            <Input
+              name="confirmPassword"
+              type="password"
+              placeholder="confirm password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+          </Field.Root>
+        </Fieldset.Content>
+        <Field.Root>
+          {error && (
+            <Text color="red.500" mb={4}>
+              {error}
+            </Text>
+          )}
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            colorScheme="teal"
+            variant="solid"
+            isLoading={isLoading}
+            isDisabled={!formData.name || !formData.email || !formData.password || !formData.confirmPassword}
+          >
+            Register
+          </Button>
+        </Field.Root>
+      </Fieldset.Root>
+    </Flex>
+    
   );
 };
 

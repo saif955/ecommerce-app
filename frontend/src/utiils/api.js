@@ -53,7 +53,7 @@ export const loginUser = async (credentials) => {
 };
 
 export const logoutUser = async () => {
-  localStorage.removeItem('user');
+  localStorage.removeItem('token');
 };
 
 export const getProducts = async () => {
