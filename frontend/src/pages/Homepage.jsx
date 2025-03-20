@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { logoutUser, getProducts } from "../utiils/api";
+import {  getProducts } from "../utiils/api";
 import { useNavigate } from "react-router-dom";
+import ProductCard from "../components/common/ProductCard";
+import { Box, Button } from "@chakra-ui/react";
 const Homepage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,15 +29,7 @@ const Homepage = () => {
     return false;
   };
 
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-      navigate("/login");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
+ 
   useEffect(() => {
     getData();
   }, []);
@@ -47,14 +41,12 @@ const Homepage = () => {
   return (
     <div>
       <h1>Products</h1>
-      <ul>
+      <Box display="flex" flexWrap="wrap" padding={4} gap={4}>
         {data.map((product) => (
-          <li key={product._id}>
-            {product.name} - ${product.price}
-          </li>
+          <ProductCard key={product._id} product={product}  />
         ))}
-      </ul>
-      <button onClick={handleLogout}>Logout</button>
+      </Box>
+      
     </div>
   );
 };

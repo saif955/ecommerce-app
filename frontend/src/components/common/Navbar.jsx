@@ -9,13 +9,24 @@ import {
 import { useColorMode, useColorModeValue } from "../ui/color-mode";
 import { Link } from "react-router-dom";
 import { LuSun, LuMoon } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../utiils/api";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { colorMode, toggleColorMode } = useColorMode();
   const bgGradient = useColorModeValue(
     "linear(to-r, teal.500, blue.500)",
     "linear(to-r, purple.600, pink.600)"
   );
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <Flex
@@ -46,7 +57,7 @@ const Navbar = () => {
             as={Link}
             to="/login"
             colorScheme="whiteAlpha"
-            variant="outline"
+            variant="solid"
           >
             Login
           </Button>
@@ -60,12 +71,20 @@ const Navbar = () => {
             Register
           </Button>
           <Button
+            onClick={handleLogout}
+            colorScheme="whiteAlpha"
+            variant="solid"
+          >
+            Logout
+          </Button>
+          <Button
             onClick={toggleColorMode}
             variant="ghost"
             aria-label="Toggle color mode"
           >
             {colorMode === "light" ? <LuMoon size={20} /> : <LuSun size={20} />}
           </Button>
+          
         </HStack>
       </Flex>
     </Flex>
