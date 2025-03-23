@@ -36,9 +36,18 @@ const Login = () => {
       navigate("/");
     } catch (err) {
       setError(err.message || "Login failed");
+    } finally {
+      setIsLoading(false);
     }
   };
   
+  if (isLoading) {
+    return (
+      <Flex align={"center"} justify={"center"} h={"100vh"}>
+        <Text>Loading...</Text>
+      </Flex>
+    );
+  }
   return (
     <Flex align={"center"} justify={"center"} h={"100vh"}>
       <Fieldset.Root size="lg" maxW="md" p={4}>
