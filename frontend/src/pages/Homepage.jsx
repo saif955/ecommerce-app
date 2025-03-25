@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import {  getProducts } from "../utiils/api";
+import { getProducts } from "../utiils/api";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/common/ProductCard";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 const Homepage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,25 +29,26 @@ const Homepage = () => {
     return false;
   };
 
- 
   useEffect(() => {
     getData();
   }, []);
 
   if (loading) return <div>Loading products...</div>;
   if (error) return <div>Error: {error}</div>;
-  if(!getLoggedInUser()) navigate("/login")
+  if (!getLoggedInUser()) navigate("/login");
 
   return (
-    
-      
+    <Box p={8} maxW="container.xl" mx="auto">
+      <Heading mb={6} fontSize="2xl" fontWeight="bold" textAlign={"center"}>
+        Homepage{" "}
+      </Heading>
+
       <Box display="flex" flexWrap="wrap" padding={4} gap={4}>
         {data.map((product) => (
-          <ProductCard key={product._id} product={product}  />
+          <ProductCard key={product._id} product={product} />
         ))}
       </Box>
-      
-    
+    </Box>
   );
 };
 

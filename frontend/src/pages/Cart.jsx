@@ -8,8 +8,13 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { addToCart, getCart, removeFromCart,updateCartItem } from "../utiils/Cartapi"; // Fixed typo
-import { toaster } from "@/components/ui/toaster";
+import {
+  addToCart,
+  getCart,
+  removeFromCart,
+  updateCartItem,
+} from "../utiils/Cartapi"; // Fixed typo
+c
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
@@ -77,21 +82,24 @@ const Cart = () => {
 
   return (
     <Box p={8} maxW="container.xl" mx="auto">
-      <Center>
-        <Heading mb={6} fontSize="2xl">
-          Shopping Cart
-        </Heading>
-      </Center>
+      <Heading mb={6} fontSize="2xl" fontWeight="bold" textAlign={"center"}>
+        Shopping Cart
+      </Heading>
+
       {cartItems.length === 0 ? (
         <Text fontSize="lg">Your cart is empty</Text>
       ) : (
         <Box>
-          <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap={6}>
+          <Grid
+            templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+            gap={6}
+            textAlign={"center"}
+          >
             {cartItems.map((item) => (
-              <Box 
+              <Box
                 key={item.product.id}
-                borderWidth="1px" 
-                borderRadius="lg" 
+                borderWidth="1px"
+                borderRadius="lg"
                 p={4}
                 boxShadow="md"
               >
@@ -99,32 +107,42 @@ const Cart = () => {
                   <Text fontSize="xl" fontWeight="bold">
                     {item.product.name}
                   </Text>
-                  
+
                   <Flex justify="space-between" align="center">
                     <Text>Price:</Text>
                     <Text fontWeight="semibold">${item.priceSnapshot}</Text>
                   </Flex>
-                  
+
                   <Flex justify="space-between" align="center">
                     <Text>Quantity:</Text>
                     <Flex align="center" gap={2}>
-                      <Button 
-                        size="sm" 
-                        onClick={() => handleQuantityChange(item.product.id, item.quantity - 1)}
+                      <Button
+                        size="sm"
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.product.id,
+                            item.quantity - 1
+                          )
+                        }
                         isDisabled={item.quantity <= 1}
                       >
                         -
                       </Button>
                       <Text>{item.quantity}</Text>
-                      <Button 
-                        size="sm" 
-                        onClick={() => handleQuantityChange(item.product.id, item.quantity + 1)}
+                      <Button
+                        size="sm"
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.product.id,
+                            item.quantity + 1
+                          )
+                        }
                       >
                         +
                       </Button>
                     </Flex>
                   </Flex>
-                  
+
                   <Button
                     mt={2}
                     colorScheme="red"
