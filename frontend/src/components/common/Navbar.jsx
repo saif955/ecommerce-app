@@ -71,6 +71,14 @@ const Navbar = () => {
             Register
           </Button>
           <Button
+            as={Link}
+            to="/cart"
+            colorScheme="whiteAlpha"
+            variant="solid"
+          >
+            Cart
+          </Button>
+          <Button
             onClick={handleLogout}
             colorScheme="whiteAlpha"
             variant="solid"

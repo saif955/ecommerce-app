@@ -39,15 +39,15 @@ const Homepage = () => {
   if(!getLoggedInUser()) navigate("/login")
 
   return (
-    <div>
-      <h1>Products</h1>
+    
+      
       <Box display="flex" flexWrap="wrap" padding={4} gap={4}>
         {data.map((product) => (
           <ProductCard key={product._id} product={product}  />
         ))}
       </Box>
       
-    </div>
+    
   );
 };
 
