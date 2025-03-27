@@ -4,14 +4,12 @@ import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
-import { Box } from "@chakra-ui/react";
-import { useColorModeValue } from "./components/ui/color-mode";
 import { Toaster } from "./components/ui/toaster";
 const App = () => {
   return (
    <>
-      <Navbar />
       <Toaster />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/register" element={<Register />} />

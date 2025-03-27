@@ -1,17 +1,16 @@
-import {
-  Button,
-  Container,
-  HStack,
-  Text,
-  Flex,
-  Spacer,
-} from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { Button, HStack, Text, Flex, Box, IconButton } from "@chakra-ui/react";
 import { useColorMode, useColorModeValue } from "../ui/color-mode";
 import { Link } from "react-router-dom";
 import { LuSun, LuMoon } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../utiils/api";
-
+import { getCart } from "../../utiils/Cartapi";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { MdLogout } from "react-icons/md";
+import { MdLogin } from "react-icons/md";
+import { Icon } from "@chakra-ui/react";
+import { FaUser } from "react-icons/fa";
 const Navbar = () => {
   const navigate = useNavigate();
   const { colorMode, toggleColorMode } = useColorMode();
@@ -19,6 +18,24 @@ const Navbar = () => {
     "linear(to-r, teal.500, blue.500)",
     "linear(to-r, purple.600, pink.600)"
   );
+  const [cartCount, setCartCount] = useState(0);
+  const isLoggedIn = !!localStorage.getItem("token");
+  useEffect(() => {
+    if (isLoggedIn) {
+      const fetchCartCount = async () => {
+        try {
+          const response = await getCart();
+          setCartCount(response.total);
+        } catch (error) {
+          console.error("Error fetching cart count:", error);
+          setCartCount(0);
+        }
+      };
+      fetchCartCount();
+    } else {
+      setCartCount(0);
+    }
+  }, [isLoggedIn]);
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -53,46 +70,65 @@ const Navbar = () => {
 
       <Flex flex={1} justify="flex-end">
         <HStack spacing={4}>
-          <Button
-            as={Link}
-            to="/login"
-            colorScheme="whiteAlpha"
-            variant="solid"
-          >
-            Login
-          </Button>
-
-          <Button
-            as={Link}
-            to="/register"
-            colorScheme="whiteAlpha"
-            variant="solid"
-          >
-            Register
-          </Button>
+          {!isLoggedIn && (
+            <>
+              <Button
+                as={Link}
+                to="/login"
+                colorScheme="whiteAlpha"
+                variant="solid"
+              >
+                <Icon>
+                  <MdLogin />
+                </Icon>
+              </Button>
+              <Button
+                as={Link}
+                to="/register"
+                colorScheme="whiteAlpha"
+                variant="solid"
+              >
+                <FaUser />
+              </Button>
+            </>
+          )}
           <Button
             as={Link}
             to="/cart"
             colorScheme="whiteAlpha"
             variant="solid"
+            position="relative"
           >
-            Cart
+            <AiOutlineShoppingCart />
+            {cartCount > 0 && (
+              <Box
+                as="span"
+                position="absolute"
+                top="-1"
+                right="-1"
+                bg="red.500"
+                color="white"
+                fontSize="xs"
+                px={2}
+                py={1}
+                borderRadius="full"
+              >
+                {cartCount}
+              </Box>
+            )}
           </Button>
-          <Button
-            onClick={handleLogout}
-            colorScheme="whiteAlpha"
-            variant="solid"
-          >
-            Logout
-          </Button>
-          <Button
-            onClick={toggleColorMode}
-            variant="ghost"
-            aria-label="Toggle color mode"
-          >
+          {isLoggedIn && (
+            <Button
+              onClick={handleLogout}
+              colorScheme="whiteAlpha"
+              variant="solid"
+            >
+              <MdLogout />
+            </Button>
+          )}
+          <Button onClick={toggleColorMode} variant="solid">
             {colorMode === "light" ? <LuMoon size={20} /> : <LuSun size={20} />}
           </Button>
-          
         </HStack>
       </Flex>
     </Flex>

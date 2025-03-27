@@ -14,7 +14,7 @@ import {
   removeFromCart,
   updateCartItem,
 } from "../utiils/Cartapi"; // Fixed typo
-c
+import { toaster } from "@/components/ui/toaster";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);

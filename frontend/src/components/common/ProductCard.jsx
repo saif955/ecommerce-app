@@ -1,41 +1,81 @@
-import { Button, Card, Image, Text, Box } from "@chakra-ui/react";
+import { useState } from "react";
+import { Button, Image, Text, Box } from "@chakra-ui/react";
 import { addToCart } from "@/utiils/Cartapi";
 import { toaster } from "@/components/ui/toaster";
-const handleAddToCart = async (productId) => {
-  try {
-    await addToCart(productId);
-    toaster.create({
-      title: "Item added to cart",
-      status: "success",
-      duration: 2000,
-    })
-  } catch (error) {
-    toaster.create({
-      title: "Add to cart failed",
-      description: error.message,
-      status: "error",
-      duration: 3000,
-    });
-    
-  }
-}
+import { useNavigate } from "react-router-dom";
+
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddToCart = async (productId) => {
+    setIsLoading(true);
+    try {
+      await addToCart(productId);
+      toaster.create({
+        title: "Item added to cart",
+        status: "success",
+        duration: 2000,
+      });
+    } catch (error) {
+      toaster.create({
+        title: "Add to cart failed",
+        description: error.message,
+        status: "error",
+        duration: 3000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
-    <Card.Root maxW="sm" key={product._id} overflow={"hidden"} gap={4}>
-      <Image src={product.image} alt={product.name} />
-      <Card.Body>
-        <Card.Title>{product.name}</Card.Title>
+    <Box
+      maxW="sm"
+      key={product._id}
+      overflow="hidden"
+      gap={4}
+      border="1px solid #ccc"
+      p={4}
+      borderRadius="md"
+    >
+      <Image
+        src={product.image}
+        alt={product.name}
+        w="full"
+        objectFit="cover"
+      />
+      <Box mt={4}>
+        <Text fontSize="xl" fontWeight="bold">
+          {product.name}
+        </Text>
         <Box mt={2}>
-          <Text as="div" fontWeight={"bold"} fontFamily={"monospace"} fontSize={"2xl"}>
+          <Text fontWeight="bold" fontFamily="monospace" fontSize="2xl">
             ${product.price}
           </Text>
         </Box>
-      </Card.Body>
-      <Card.Footer>
-        <Button variant="outline" colorPalette={"blue"}  onClick={() => handleAddToCart(product._id)}>Add to Cart</Button>
-        <Button variant="secondary" colorPalette={"blue"} onClick={() => handleAddToCart(product._id)}>Buy Now</Button>
-      </Card.Footer>
-    </Card.Root>
+      </Box>
+      <Box mt={4} display="flex" gap={2}>
+        <Button
+          variant="outline"
+          colorScheme="blue"
+          onClick={() => handleAddToCart(product._id)}
+          isLoading={isLoading}
+        >
+          Add to Cart
+        </Button>
+        <Button
+          variant="solid"
+          colorScheme="blue"
+          onClick={async () => {
+            await handleAddToCart(product._id);
+            navigate("/cart");
+          }}
+          isLoading={isLoading}
+        >
+          Buy Now
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

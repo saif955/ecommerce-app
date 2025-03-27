@@ -50,7 +50,13 @@ const Login = () => {
   }
   return (
     <Flex align={"center"} justify={"center"} h={"100vh"}>
-      <Fieldset.Root size="lg" maxW="md" p={4}>
+      <Fieldset.Root 
+        
+        onSubmit={handleSubmit}
+        size="lg" 
+        maxW="md" 
+        p={4}
+      >
         <Stack>
           <Text fontSize="2xl" fontWeight={"bold"}>
             Login Information
@@ -68,6 +74,8 @@ const Login = () => {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
+
             />
           </Field.Root>
           <Field.Root>
@@ -78,6 +86,7 @@ const Login = () => {
               placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
             />
           </Field.Root>
         </Fieldset.Content>
@@ -88,8 +97,10 @@ const Login = () => {
             </Text>
           )}
           <Button
-            type="submit"
+            mt={4}
+            w="full"
             onClick={handleSubmit}
+            type="submit"
             colorScheme="teal"
             variant="solid"
             isLoading={isLoading}
