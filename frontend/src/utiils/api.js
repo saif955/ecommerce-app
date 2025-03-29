@@ -52,6 +52,15 @@ export const loginUser = async (credentials) => {
   }
 };
 
+export const getUserProfile = async () => {
+  try {
+    const response = await api.get('/users/profile');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || 'Failed to fetch user profile';
+  }
+};
+
 export const logoutUser = async () => {
   localStorage.removeItem('token');
 };
@@ -64,5 +73,8 @@ export const getProducts = async () => {
     throw error.response?.data?.message || 'Failed to fetch products';
   }
 };
+
+
+
 
 export default api;

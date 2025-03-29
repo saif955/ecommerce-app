@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { Button, Image, Text, Box } from "@chakra-ui/react";
-import { addToCart } from "@/utiils/Cartapi";
+import { addToCart, getCart } from "@/utiils/Cartapi";
 import { toaster } from "@/components/ui/toaster";
 import { useNavigate } from "react-router-dom";
+import useCartStore from "@/store/cartStore";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
+  const { setCartItems, setTotal } = useCartStore();
   const handleAddToCart = async (productId) => {
     setIsLoading(true);
     try {
       await addToCart(productId);
+      const data = await getCart();
+      setCartItems(data.items || []);
+      setTotal(data.total || 0);
       toaster.create({
         title: "Item added to cart",
         status: "success",

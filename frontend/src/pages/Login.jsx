@@ -31,9 +31,10 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const { token } = await loginUser(formData);
+      const { token, role } = await loginUser(formData);
       localStorage.setItem("token", token);
-      navigate("/");
+      localStorage.setItem("role", role);
+      navigate(role === 'admin' ? '/admin' : '/');
     } catch (err) {
       setError(err.message || "Login failed");
     } finally {

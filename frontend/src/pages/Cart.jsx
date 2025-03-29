@@ -7,18 +7,18 @@ import {
   Text,
   Center,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
-  addToCart,
   getCart,
   removeFromCart,
   updateCartItem,
-} from "../utiils/Cartapi"; // Fixed typo
+} from "../utiils/Cartapi";
 import { toaster } from "@/components/ui/toaster";
+import { useNavigate } from "react-router-dom";
+import useCartStore from "../store/cartStore";
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [total, setTotal] = useState(0);
-
+  const { cartItems, total, setCartItems, setTotal } = useCartStore();
+  const navigate = useNavigate();
   const fetchCart = async () => {
     try {
       const data = await getCart();
@@ -161,7 +161,7 @@ const Cart = () => {
               <Text fontSize="xl" fontWeight="bold">
                 Total: ${total}
               </Text>
-              <Button mt={4} colorScheme="blue" size="lg">
+              <Button mt={4} colorScheme="blue" size="lg" onClick={() => navigate("/cartsummary")}>
                 Checkout
               </Button>
             </Box>

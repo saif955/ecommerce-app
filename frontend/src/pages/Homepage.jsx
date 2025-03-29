@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProducts } from "../utiils/api";
+import { getProducts, getUserProfile } from "../utiils/api";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/common/ProductCard";
 import { Box, Heading } from "@chakra-ui/react";
@@ -29,8 +29,25 @@ const Homepage = () => {
     return false;
   };
 
+  const isAdminUser = async () => {
+    const response = await getUserProfile();
+    if (response.role === "admin") {
+      return true;
+    }
+    return false;
+  };
+
   useEffect(() => {
     getData();
+  }, []);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (getLoggedInUser() && await isAdminUser()) {
+        navigate("/admin");
+      }
+    };
+    checkAdmin();
   }, []);
 
   if (loading) return <div>Loading products...</div>;
