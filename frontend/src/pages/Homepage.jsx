@@ -60,7 +60,7 @@ const Homepage = () => {
         Homepage{" "}
       </Heading>
 
-      <Box display="flex" flexWrap="wrap" padding={4} gap={4}>
+      <Box display="flex" flexWrap="wrap" padding={4} gap={4} justifyContent="center">
         {data.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}

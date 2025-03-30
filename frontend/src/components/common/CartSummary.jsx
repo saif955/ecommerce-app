@@ -26,14 +26,14 @@ const CartSummary = () => {
       fetchCart();
     }, []);
   return (
-    <Box>
+    <Box >
       <Heading>Cart Summary</Heading>
       <List.Root>
         {cartItems.map((item) => (
           <List.Item key={item._id}>
-            <ListItem>{item.name}</ListItem>
-            <ListItem>Quantity: {item.quantity}</ListItem>
-            <ListItem>Price: {item.priceSnapshot}</ListItem>
+            <ListItem><Text>Name: {item.name}</Text></ListItem>
+            <ListItem><Text>Quantity: {item.quantity}</Text></ListItem>
+            <ListItem><Text>Price: {item.priceSnapshot}</Text></ListItem>
           </List.Item>
         ))}
       </List.Root>
