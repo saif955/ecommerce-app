@@ -104,6 +104,7 @@ const Admin = () => {
           bg="white"
           borderRadius="lg"
           boxShadow="sm"
+          color="gray.500"
         >
           <Spinner size="xl" thickness="3px" color="blue.500" />
           <Text mt={4} color="gray.500">Loading products...</Text>
@@ -112,7 +113,7 @@ const Admin = () => {
         <Box 
           textAlign="center" 
           p={6} 
-          color="red.500"
+          color='#E53E3E'
           bg="white"
           borderRadius="lg"
           boxShadow="sm"
